@@ -107,6 +107,11 @@ func findMergePointDict(_ headA: Node?,_ headB: Node?) -> Int? {
     
 }
 
+// Most optimized
+func findMergePoint() {
+    
+}
+
 // 1 2 3 4 5 6
 let node6 = Node(6)
 let node5 = Node(5, node6)
