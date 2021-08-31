@@ -52,9 +52,9 @@ func printLinkedList(_ head: Node?) {
 
 // First solution: brute force
 // Time: O(n^2)
-// Space: O(n^2)
+// Space: O(n)
 // Go through each node in first list and compare with all nodes in second list
-func findMergeBrute(_ headA: Node?, _ headB: Node? ) -> Int? {
+func findMergeBrute(_ headA: Node?,_ headB: Node? ) -> Int? {
     let lenA = length(headA) // O(n)
     let lenB = length(headB) // O(n)
     
@@ -75,6 +75,38 @@ func findMergeBrute(_ headA: Node?, _ headB: Node? ) -> Int? {
     return nil
 }
 
+// Second solution: using dictionaries
+// Assign second list's data to a dict's keys and set true for that key's value
+// Then go through each element in first list and check if exists in dict
+// This is a trade-off for time instead of space
+// Time: O(n)
+// Space: O(n^2)
+func findMergePointDict(_ headA: Node?,_ headB: Node?) -> Int? {
+    let lenA = length(headA)
+    let lenB = length(headB)
+    
+    var dictB = [Int? : Bool]()
+    var currentB = headB
+    // Assign second list's data to dict's key with true as the value
+    for _ in 0...lenB - 1 {
+        let B = currentB?.data
+        dictB[B] = true
+        currentB = currentB?.next
+    }
+    
+    var currentA = headA
+    for _ in 0...lenA - 1 {
+        let A = currentA?.data
+        if dictB[A] == true {
+            return A
+        }
+        currentA = currentA?.next
+    }
+    
+    return nil
+    
+}
+
 // 1 2 3 4 5 6
 let node6 = Node(6)
 let node5 = Node(5, node6)
@@ -89,6 +121,7 @@ let node10 = Node(10, node11)
 
 //printLinkedList(node1)
 findMergeBrute(node1, node10)
+findMergePointDict(node1, node10)
 
 
 
