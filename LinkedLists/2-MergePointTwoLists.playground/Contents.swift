@@ -51,15 +51,15 @@ func printLinkedList(_ head: Node?) {
 }
 
 // First solution: brute force
-// Time: O(n^2)
+// Time: O(m*n) which is same as O(n^2)
 // Space: O(n)
 // Go through each node in first list and compare with all nodes in second list
 func findMergeBrute(_ headA: Node?,_ headB: Node? ) -> Int? {
-    let lenA = length(headA) // O(n)
+    let lenA = length(headA) // O(m)
     let lenB = length(headB) // O(n)
     
     var currentA = headA
-    for _ in 0...lenA - 1 { // O(n)
+    for _ in 0...lenA - 1 { // O(m)
         let A = currentA?.data
         var currentB = headB
         for _ in 0...lenB - 1 { // O(n)
@@ -79,23 +79,23 @@ func findMergeBrute(_ headA: Node?,_ headB: Node? ) -> Int? {
 // Assign second list's data to a dict's keys and set true for that key's value
 // Then go through each element in first list and check if exists in dict
 // This is a trade-off for time instead of space
-// Time: O(n)
+// Time: O(m+n) which is same as O(n)
 // Space: O(n^2)
 func findMergePointDict(_ headA: Node?,_ headB: Node?) -> Int? {
-    let lenA = length(headA)
-    let lenB = length(headB)
+    let lenA = length(headA) // O(m)
+    let lenB = length(headB) // O(n)
     
     var dictB = [Int? : Bool]()
     var currentB = headB
     // Assign second list's data to dict's key with true as the value
-    for _ in 0...lenB - 1 {
+    for _ in 0...lenB - 1 { // O(m)
         let B = currentB?.data
         dictB[B] = true
         currentB = currentB?.next
     }
     
     var currentA = headA
-    for _ in 0...lenA - 1 {
+    for _ in 0...lenA - 1 { // O(n)
         let A = currentA?.data
         if dictB[A] == true {
             return A
@@ -108,8 +108,44 @@ func findMergePointDict(_ headA: Node?,_ headB: Node?) -> Int? {
 }
 
 // Most optimized
-func findMergePoint() {
+// Make both lists start same n elements before the merge point by finding the difference between the lists' lenghts
+// This allows us to only go through the list once since both lists indexes match
+// Time: O(n)
+// Space: O(n)
+func findMergePoint(_ headA: Node?, _ headB: Node?) -> Int? {
+    let lenA = length(headA)
+    let lenB = length(headB)
     
+    var currentA = headA
+    var currentB = headB
+    
+    // Check for longer list to know which one to flush out
+    // Move d elements over in longer list
+    if lenB > lenA {
+        let temp = currentA
+        currentA = currentB
+        currentB = temp
+    }
+    
+    let d = abs(lenA - lenB)
+    
+    for _ in 1...d {
+        currentA = currentA?.next
+    }
+    
+    // It doesn't matter which length we use here
+    // We will get to our merge point regardless
+    for _ in 0...lenA - 1 {
+        let A = currentA?.data
+        let B = currentB?.data
+        if A == B {
+            return A
+        }
+        currentA = currentA?.next
+        currentB = currentB?.next
+    }
+    
+    return nil
 }
 
 // 1 2 3 4 5 6
@@ -127,6 +163,28 @@ let node10 = Node(10, node11)
 //printLinkedList(node1)
 findMergeBrute(node1, node10)
 findMergePointDict(node1, node10)
+findMergePoint(node1, node10)
+
+// 7 8 9 10
+let node15 = Node(10)
+let node14 = Node(9, node15)
+let node13 = Node(8, node14)
+let node12 = Node(7, node13)
+
+// 1 2 3 4 5 6 7 8 9 10
+let node21 = Node(6, node12)
+let node20 = Node(5, node21)
+let node19 = Node(4, node20)
+let node18 = Node(3, node19)
+let node17 = Node(2, node18)
+let node16 = Node(1, node17)
+
+findMergeBrute(node12, node16)
+findMergePointDict(node12, node16)
+findMergePoint(node12, node16)
+
+
+
 
 
 
