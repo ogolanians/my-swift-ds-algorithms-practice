@@ -16,4 +16,40 @@ import Foundation
  Answer should be correct. Don't worry about performance.
  */
 
+// Time: O(n)
+func contactMatch(_ A: [String], _ B: [String], _ P: String) -> String {
+    var result = Array<String>()
+    
+    for i in 0..<B.count {
+        if B[i].contains(P) {
+            result.append(A[i]) // Add the matching names to result
+        }
+    }
+    
+    if result.count == 0 {
+        return "NO CONTACT"
+    } else if result.count == 1 {
+        return result.first!
+    }
+    
+    // If we get to this point then more than contact is found
+    // Sort the list alphabetically and return first one
+    
+    return result.sorted().first!
+}
 
+let A = ["pim", "pom"]
+let B = ["", "999999999777888999"]
+let P = "88999"
+
+let C = ["homie", "avocado", "brian"]
+let D = ["1", "236371838", "371801932"]
+let P1 = "3718"
+
+let E = ["hayastan", "parskastan", "amerika"]
+let F = ["123", "456", "789"]
+let P2 = "101112"
+
+contactMatch(A, B, P) // "pom"
+contactMatch(C, D, P1) // "avocado"
+contactMatch(E, F, P2) // "NO CONTACT"
