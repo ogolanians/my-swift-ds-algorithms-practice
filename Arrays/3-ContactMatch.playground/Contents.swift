@@ -38,6 +38,30 @@ func contactMatch(_ A: [String], _ B: [String], _ P: String) -> String {
     return result.sorted().first!
 }
 
+// This method uses a dictionary to store and lookup for contact
+// Time: O(n)
+func contactMatchDict(_ A: [String], _ B: [String], _ P: String) -> String {
+    // Create a dict with contact name as key and phone # as value
+    var contactsDict = [String : String]()
+    
+    for i in 0..<A.count {
+        contactsDict[A[i]] = B[i]
+    }
+    
+    let matches = contactsDict.filter { $0.value.contains(P) }
+    
+    if matches.count == 0 {
+        return "NO CONTACT"
+    } else if matches.count == 1 {
+        return matches.first!.key
+    }
+    
+    // Sort alphabetically then return first contact
+    let matchesSorted = matches.keys.sorted()
+    
+    return matchesSorted.first!
+}
+
 let A = ["pim", "pom"]
 let B = ["", "999999999777888999"]
 let P = "88999"
@@ -53,3 +77,7 @@ let P2 = "101112"
 contactMatch(A, B, P) // "pom"
 contactMatch(C, D, P1) // "avocado"
 contactMatch(E, F, P2) // "NO CONTACT"
+
+contactMatchDict(A, B, P)
+contactMatchDict(C, D, P1) // "avocado"
+contactMatchDict(E, F, P2) // "NO CONTACT"
