@@ -8,6 +8,15 @@ class Node {
     init(_ key: Int) {
         self.key = key
     }
+    
+    // Keep recursing left until we hit a node's null value
+    var min: Node {
+        if left == nil {
+            return self
+        } else {
+            return left!.min
+        }
+    }
 }
 
 let bst = BST()
@@ -57,5 +66,15 @@ class BST {
             return find(node.right, key)
         }
         return nil
+    }
+    
+    func findMin() -> Int {
+        guard let root = root else { return 0 }
+        return findMin(root).key
+    }
+    
+    private func findMin(_ node: Node) -> Node {
+        // min closure handles this functionality
+        return node.min
     }
 }
