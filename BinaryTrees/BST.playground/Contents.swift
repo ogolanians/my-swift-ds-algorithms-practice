@@ -77,4 +77,15 @@ class BST {
         // min closure handles this functionality
         return node.min
     }
+    
+    func delete(_ key: Int) {
+        guard let _ = root else { return }
+        root = delete(&root, key)
+    }
+    
+    func delete(_ node: inout Node?, _ key: Int) -> Node? {
+        
+        
+        return nil
+    }
 }
