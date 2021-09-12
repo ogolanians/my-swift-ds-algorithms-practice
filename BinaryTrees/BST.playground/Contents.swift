@@ -100,8 +100,53 @@ class BST {
     // -- Replace the node with the min found from rhs
     // -- Remove the min to get rid of duplicates
     func delete(_ node: inout Node?, _ key: Int) -> Node? {
+        guard let nd = node else { return nil }
         
+        // Find the node that belongs to key passed in
+        if key < nd.key {
+            // Go left
+            nd.left = delete(&nd.left, key)
+        } else if key > nd.key {
+            // Go right
+            nd.right = delete(&nd.right, key)
+        } else {
+            // Found the node that must be deleted
+            // Check for cases here
+            
+            // Case 0: No child
+            if nd.left == nil && nd.right == nil {
+                node = nil
+            }
+            // Case 1: 1 Child
+            else if nd.left == nil {
+                node = nd.right
+            }
+            else if nd.right == nil {
+                node = nd.left
+            }
+            // Case 2: 2 Children
+            else {
+                // Find the min in deepest rhs
+                let minRight = findMin(nd.right!)
+                // Assign the rhs min value to value of node to be deleted
+                node!.key = minRight.key
+                // Delete the rhs min node to avoid duplicates in tree
+                node!.right = delete(&node!.right, node!.key)
+            }
+        }
         
         return nil
     }
 }
+
+// No child deletion
+bst.delete(8)
+print(bst.find(key: 8) ?? "can't find 8") // can't find 8
+
+// One child deletion
+bst.delete(7)
+print(bst.find(key: 7) ?? "can't find 7") // can't find 7
+
+// Two children deletion
+bst.delete(3)
+print(bst.find(key: 3) ?? "can't find 3") // can't find 3
