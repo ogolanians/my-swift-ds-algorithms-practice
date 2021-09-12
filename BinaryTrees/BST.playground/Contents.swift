@@ -83,6 +83,22 @@ class BST {
         root = delete(&root, key)
     }
     
+    // To delete a node, there are 3 cases to handle
+    // These cases depend on the number(s) of child(ren)
+    // Case 0: No child
+    // Case 1: 1 child
+    // Case 2: 2 children
+    // In below commentary, the "node" means the one selected to be deleted
+    
+    // In case of no child, set the node's reference to null
+    
+    // In case of 1 child, replace the node with its child
+    
+    // In case of 2 children, remember that a tree can be represented multiple ways
+    // -- Arrange the tree so that each node has either no child or 1 child
+    // -- Go as deep down the rhs of node and find the min
+    // -- Replace the node with the min found from rhs
+    // -- Remove the min to get rid of duplicates
     func delete(_ node: inout Node?, _ key: Int) -> Node? {
         
         
